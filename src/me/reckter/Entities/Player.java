@@ -1,5 +1,6 @@
 package me.reckter.Entities;
 
+import me.reckter.Level.BaseJUMPLevel;
 import me.reckter.Level.BaseLevel;
 import me.reckter.Log;
 import me.reckter.Particles.RocketParticle;
@@ -18,15 +19,18 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class Player extends BaseEntity {
 
-
-
-    protected final float MOMENTUM_GAIN = 200;
-    protected Sound testSound;
+    protected final float MOMENTUM_GAIN = 600;
 
 
     // input variables
     protected int angularGain;
     protected int speedGain;
+
+    protected float oldPositionX;
+    protected float oldPositionY;
+
+    protected boolean isJumping;
+    protected boolean isMoving;
 
     public Player(BaseLevel level) {
         super(level);
@@ -34,7 +38,7 @@ public class Player extends BaseEntity {
 
     @Override
     public Rectangle getAAHitBox() {
-        return new Rectangle(x,y,50,150);
+        return new Rectangle(x, y, 350, 35);
     }
 
     @Override
@@ -49,38 +53,14 @@ public class Player extends BaseEntity {
 
         angle = 0;
         angularGain = 0;
-        speedGain = 0;
-        MAX_SPEED = 800;
+        speedGain = 600;
+        MAX_SPEED = 250;
         MAX_ANGULAR_MOMENTUM = 180;
-
-       /* try {
-            testSound = new Sound("res/Sounds/pew.wav");
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }*/
-
-        switch ((int) (Math.random() * 5)){
-            case 0:
-                weapon = "shoot";
-                break;
-            case 1:
-                weapon = "laser";
-                break;
-            case 2:
-                weapon = "grenade";
-                break;
-            case 3:
-                weapon = "missile";
-                break;
-            case 4:
-                weapon = "bomb";
-                break;
-            default:
-                Log.error("invalid Weapon type!");
-        }
-;
+        isJumping = false;
+        movement = new Vector2f(0,0);
 
     }
+
 
     /**
      * gets called bevor every logic tick so the input can be handled
@@ -96,14 +76,10 @@ public class Player extends BaseEntity {
 
         }
 
-        if(input.isKeyDown(Input.KEY_J)){
-            speedGain = 1;
-        } else {
-            speedGain = 0;
-        }
-
         if(input.isKeyDown(Input.KEY_P)){
-            //TODO jumping here ^^
+             isJumping = true;
+        } else {
+            isJumping = false;
         }
 
     }
@@ -116,16 +92,39 @@ public class Player extends BaseEntity {
 
     @Override
     public void onCollision(BaseEntity with) {
-
+        if(with instanceof CommandEntity) {
+            if(((CommandEntity) with).canBeJumped() && isJumping) {
+                //TODO jumping logic here
+            }
+        }
     }
 
     @Override
     public void logic(int delta) {
-        if(speedGain == 1){
-            level.add(new RocketParticle(level, this));
+        if(level instanceof BaseJUMPLevel) {
+            if(((BaseJUMPLevel) level).clkTriggered()) {
+                oldPositionX = x;
+                oldPositionY = y;
+                isMoving = true;
+            }
         }
 
-        movement.add(new Vector2f(angle).scale(MOMENTUM_GAIN).scale(speedGain).scale((float) delta / 1000));
+        if(isMoving) {
+            if(oldPositionY <= y + BaseJUMPLevel.STEP_HEIGHT / 2) {
+                movement.add(new Vector2f(0, -MOMENTUM_GAIN).scale((float) delta / 1000));
+            } else if(oldPositionY > y + BaseJUMPLevel.STEP_HEIGHT / 2){
+                movement.add(new Vector2f(0, MOMENTUM_GAIN).scale(0.9f).scale((float) delta / 1000));
+            }
+            if(oldPositionY > y + BaseJUMPLevel.STEP_HEIGHT) {
+                movement.set(0,0);
+                y = oldPositionY - BaseJUMPLevel.STEP_HEIGHT ;
+                isMoving = false;
+            }
+            if(movement.length() > MAX_SPEED) {
+                movement.normalise().scale(MAX_SPEED);
+            }
+
+        }
         super.logic(delta);
     }
 
@@ -135,8 +134,8 @@ public class Player extends BaseEntity {
         g.setColor(Color.white);
         //g.fill(new Circle(x, y, size));
 
-        g.fill(getHitBox());
+        g.draw(getHitBox());
 
-        super.render(g);
+        //super.render(g);
     }
 }

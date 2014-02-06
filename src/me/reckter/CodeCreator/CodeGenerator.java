@@ -1,8 +1,10 @@
 package me.reckter.CodeCreator;
 
 import me.reckter.CodeCreator.Code.*;
+import me.reckter.CodeCreator.Code.CodeSnipplets.BaseCode;
+import me.reckter.CodeCreator.Code.CodeSnipplets.Loop;
+import me.reckter.CodeCreator.Code.Commands.*;
 import me.reckter.CodeCreator.Code.Marker.MarkerHandler;
-import me.reckter.CodeCreator.Code.Register.Register;
 import me.reckter.CodeCreator.Code.Register.RegisterHandler;
 
 import java.util.LinkedList;
@@ -23,6 +25,8 @@ public class CodeGenerator {
         MarkerHandler.addMarker("loop");
         MarkerHandler.addMarker("mem");
         MarkerHandler.addMarker("range");
+        MarkerHandler.addMarker("JUM.P");
+        MarkerHandler.addMarker("reckter");
 
     }
 
@@ -30,12 +34,20 @@ public class CodeGenerator {
         code.clear();
         int length = 30;
 
-        for(int i = 0; i < length; i++) {
-            code.add(getRandomLine());
-        }
+        BaseCode tmp = new Loop(10);
+        tmp.generateCode();
+        code.add(tmp);
+
+        tmp = new Loop(6);
+        tmp.generateCode();
+        code.add(tmp);
+
+        tmp = new Loop(15);
+        tmp.generateCode();
+        code.add(tmp);
     }
 
-    public BaseCodeSnipplet getRandomLine(){
+    public static Command getRandomLine(){ //TODO diffrientiate between simply type commands and jumps / branches etc
         Command ret = new Command();
         int random = (int) (Math.random() * 12f);
         switch (random) {
@@ -76,7 +88,7 @@ public class CodeGenerator {
         StringBuilder out = new StringBuilder();
 
         for(BaseCodeSnipplet snipplet: code) {
-            out.append(snipplet.toString()).append("\n");
+            out.append(snipplet.toString());
         }
         return out.toString();
     }

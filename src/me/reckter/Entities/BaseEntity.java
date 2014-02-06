@@ -190,32 +190,6 @@ public class BaseEntity {
     /**
      * gets called when the unit is initiaized
      */
-    public void initForClient(){
-        MAX_IMUNE_TO_DAMAGE = 500;
-
-        lastUpdated = System.currentTimeMillis();
-
-        MAX_isDeadFor = 10;
-
-        movement = new Vector2f(0,0);
-        x = 0;
-        y = 0;
-
-        size = 10;
-
-        needsCollisionChecking = true;
-        isDead = false;
-
-        MAX_LIFE = 100;
-
-        life = MAX_LIFE;
-
-        weapon = "shoot";
-    }
-
-    /**
-     * gets called when the unit is initiaized
-     */
     public void init(){
         MAX_IMUNE_TO_DAMAGE = 500;
 
@@ -278,8 +252,6 @@ public class BaseEntity {
         angle = angle % 360;
 
 
-        movement.add(new Vector2f(0, level.getGravity()).scale((float) delta / 1000f));
-
         Vector2f tmp = movement.copy();
         tmp.scale((float)delta / 1000);
 
@@ -300,7 +272,7 @@ public class BaseEntity {
      */
     public void render(Graphics g){
         g.setColor(Color.red);
-       g.draw(getHitBox());
+        g.draw(getHitBox());
     }
 
     public boolean isDead() {

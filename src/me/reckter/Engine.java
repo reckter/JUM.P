@@ -1,7 +1,7 @@
 package me.reckter;
 
+import me.reckter.Level.BaseJUMPLevel;
 import me.reckter.Level.BaseLevel;
-import me.reckter.Level.BaseRunLevel;
 import org.newdawn.slick.*;
 
 /**
@@ -23,7 +23,7 @@ public class Engine extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-        level = new BaseRunLevel();
+        level = new BaseJUMPLevel();
         level.populate();
         level.init();
     }

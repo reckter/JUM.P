@@ -89,6 +89,9 @@ public class EntityHandler {
             if(entity.isDead() && entity.getIsDeadFor() >= entity.getMAX_isDeadFor()){
                 entitiesToRemove.add(entity);
             }
+            if(entity.getY() - level.getPlayer().getY() > level.HEIGHT * 5) {
+                entitiesToRemove.add(entity);
+            }
         }
 
         updateEntityList();

@@ -73,9 +73,6 @@ public class BaseLevel {
         Log.info("Populting level...");
         player = new Player(this);
         player.init();
-
-        player.setX(10);
-        player.setY(10);
         player.setSize(10);
 
         add(player);

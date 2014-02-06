@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class BaseCodeSnipplet {
 
-    HashMap<String, BaseCodeSnipplet> elements;
+    protected HashMap<String, BaseCodeSnipplet> elements;
 
 
     public BaseCodeSnipplet() {

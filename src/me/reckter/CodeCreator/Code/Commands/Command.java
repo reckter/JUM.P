@@ -1,5 +1,6 @@
-package me.reckter.CodeCreator.Code;
+package me.reckter.CodeCreator.Code.Commands;
 
+import me.reckter.CodeCreator.Code.BaseCodeSnipplet;
 import me.reckter.CodeCreator.Code.Marker.Marker;
 import me.reckter.CodeCreator.Code.Marker.MarkerHandler;
 

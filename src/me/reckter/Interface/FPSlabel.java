@@ -1,6 +1,7 @@
 package me.reckter.Interface;
 
 import me.reckter.Interface.HUD.BaseHudItem;
+import me.reckter.Level.BaseJUMPLevel;
 import me.reckter.Level.BaseLevel;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -67,8 +68,12 @@ public class FPSlabel extends BaseHudItem {
 		g.drawString("FPS: " +  framesShown, x, y + 20);
 		g.drawString("(" + (int) level.getPlayer().getX() + "|" + (int) level.getPlayer().getY() + ") Speed: " + level.getPlayer().getMovement().length() , x, y + 40);
 		g.drawString("Entities: " + level.getEntities().size() + " Particles: " + level.getParticles().getParticles().size() + " BackgroundParticles: " + level.getParticles().getBackgroundParticles().size(), x, y + 60);
+
         if(level.getInput() != null){
             g.drawString("Mouse (" + level.getInput().getMouseX() + "|" + level.getInput().getMouseY() + ")|" + level.getRealX(level.getInput().getMouseX()) +"|" + level.getRealY(level.getInput().getMouseY()) + "]", x, y + 80);
 	    }
+        if(level instanceof BaseJUMPLevel) {
+        g.drawString("clk: " + ((BaseJUMPLevel) level).getClk() + "/" + ((BaseJUMPLevel) level).getMAX_CLK(), x , y + 100);
+        }
     }
 }

@@ -1,7 +1,9 @@
-package me.reckter.CodeCreator.Code;
+package me.reckter.CodeCreator.Code.Commands;
 
+import me.reckter.CodeCreator.Code.Commands.Command;
 import me.reckter.CodeCreator.Code.Register.Register;
 import me.reckter.CodeCreator.Code.Register.RegisterHandler;
+import me.reckter.CodeCreator.Code.StringSnipplet;
 
 /**
  * Created by reckter on 2/6/14.

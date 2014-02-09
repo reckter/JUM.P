@@ -34,22 +34,41 @@ public class CodeGenerator {
         code.clear();
         int length = 30;
 
-        BaseCode tmp = new Loop(10);
-        tmp.generateCode();
-        code.add(tmp);
-
-        tmp = new Loop(6);
-        tmp.generateCode();
-        code.add(tmp);
-
-        tmp = new Loop(15);
-        tmp.generateCode();
-        code.add(tmp);
+        for(int i = 0; i < length; i++) {
+            code.add(getRandomLine());
+        }
     }
 
-    public static Command getRandomLine(){ //TODO diffrientiate between simply type commands and jumps / branches etc
+
+    public static Command getRandomJumpInstruction() {
         Command ret = new Command();
-        int random = (int) (Math.random() * 12f);
+        int random = (int) (Math.random() * 3f);
+        switch (random) {
+            case 0: ret = new Jump("jr", RegisterHandler.getRandomRegister());
+                break;
+            case 1: ret = new Jump("j", MarkerHandler.getRandomMarker());
+                break;
+            case 2: ret = new Jump("jal", MarkerHandler.getRandomMarker());
+                break;
+        }
+        return ret;
+    }
+
+    public static Command getRandomBranchInstruction() {
+        Command ret = new Command();
+        int random = (int) (Math.random() * 2f);
+        switch (random) {
+            case 0: ret = new Branch("beq");
+                break;
+            case 1: ret = new Branch("bne");
+                break;
+        }
+        return ret;
+    }
+
+    public static Command getRandomBasicInstruction() {
+        Command ret = new Command();
+        int random = (int) (Math.random() * 10f);
         switch (random) {
             case 0: ret = new IType("ori");
                 break;
@@ -67,15 +86,31 @@ public class CodeGenerator {
                 break;
             case 7: ret = new RType("nor");
                 break;
-            case 8: ret = new Jump("jr", RegisterHandler.getRandomRegister());
+            case 8: ret = new Store("lw");
                 break;
-            case 9: ret = new Jump("j", MarkerHandler.getRandomMarker());
+            case 9: ret = new Store("sw");
                 break;
-            case 10: ret = new IType("addi");
+        }
+        return ret;
+    }
+
+    public static Command getRandomLine(){ //TODO diffrientiate between simply type commands and jumps / branches etc
+        Command ret = new Command();
+        double random = Math.random();
+        int randIns = 0;
+        if(random <= 0.15f) {
+            randIns = 0;
+        } else if(random <= 0.4f) {
+            randIns = 1;
+        } else if(random <= 1f) {
+            randIns = 2;
+        }
+        switch (randIns) {
+            case 0: ret = getRandomJumpInstruction();
                 break;
-            case 11: ret = new Store("lw");
+            case 1: ret = getRandomBranchInstruction();
                 break;
-            case 12: ret = new Store("sw");
+            case 2: ret = getRandomBasicInstruction();
                 break;
         }
         if(Math.random() <= 0.1f) {

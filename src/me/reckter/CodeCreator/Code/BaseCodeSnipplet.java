@@ -33,6 +33,7 @@ public class BaseCodeSnipplet {
             }
         }
 
+        out.append("\n");
         return out.toString();
     }
 

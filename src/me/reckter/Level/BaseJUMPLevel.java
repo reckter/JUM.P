@@ -7,6 +7,7 @@ import me.reckter.Engine;
 import me.reckter.Entities.BaseEntity;
 import me.reckter.Entities.CommandEntity;
 import me.reckter.Interface.FPSlabel;
+import me.reckter.Interface.HUD.Score;
 import me.reckter.Particles.BaseParticle;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
@@ -38,13 +39,13 @@ public class BaseJUMPLevel extends BaseLevel {
         gravity = 1000;
         interfaces.add(new FPSlabel(this));
         WIDTH = 1000;
-        MAX_CLK = 3 * 1000;
+        MAX_CLK = 1500;
     }
 
     @Override
     public void populate() {
         super.populate();
-        minCOmmandY = player.getX() + STEP_HEIGHT * 10 + 6;
+        minCOmmandY = player.getX() + STEP_HEIGHT * 10 + STEP_HEIGHT * 0.7f;
     }
 
     @Override
@@ -53,7 +54,6 @@ public class BaseJUMPLevel extends BaseLevel {
 
     @Override
     public void checkBoundaries(BaseParticle particle) {
-        super.checkBoundaries(particle);
     }
 
     @Override
@@ -61,9 +61,9 @@ public class BaseJUMPLevel extends BaseLevel {
         clk += delta;
         clkTriggered = false;
         if(clk >= MAX_CLK){
-            MAX_CLK *= 0.9f;
-            if(MAX_CLK < 150) {
-                MAX_CLK = 150;
+            MAX_CLK *= 0.99f;
+            if(MAX_CLK < 300) {
+                MAX_CLK = 300;
             }
 
 

@@ -1,5 +1,6 @@
 package me.reckter.Entities;
 
+import me.reckter.Engine;
 import me.reckter.Interface.DamageText;
 import me.reckter.Level.BaseLevel;
 import me.reckter.Modifier.BaseModifier;
@@ -26,6 +27,8 @@ public class BaseEntity {
     protected float y;
 
     protected float size; // for easy AAHHB calculation
+    protected float width;
+    protected float height;
 
     protected Vector2f movement; //the movement vectorr
     protected boolean isAccelerating;
@@ -95,9 +98,15 @@ public class BaseEntity {
      * @param murderer
      */
     public void onDeath(BaseEntity murderer){
+        if(isDead()){
+            return;
+        }
         isDead = true;
-        for(int i = 0; i < size * 20; i++){ //TODO particle number
-            level.add(new DeathParticle(level, this));
+        if(getAAHitBox().intersects(new Rectangle(level.getRealX(0), level.getRealY(0), Engine.SCREEN_WIDTH, Engine.SCREEN_HEIGHT))) {
+            int random = (int) (Math.random() * 15 + 5);
+            for(int i = 0; i < size * random; i++){ //TODO particle number
+                level.add(new DeathParticle(level, this));
+            }
         }
     }
 
@@ -429,5 +438,21 @@ public class BaseEntity {
 
     public void setLastUpdated(long lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 }
